@@ -1,13 +1,11 @@
 import {Component} from 'react'
 import './index.css'
 
-const loginImg =
-  'https://assets.ccbp.in/frontend/react-js/nxt-trendz-login-img.png'
 const websiteLogo =
   'https://assets.ccbp.in/frontend/react-js/nxt-trendz-logo-img.png'
 
 class LoginFrom extends Component {
-  state = {username: '', password: '', errText: false}
+  state = {username: '', password: '', errText: ''}
 
   onChangeUsername = e => this.setState({username: e.target.value})
 
@@ -66,11 +64,13 @@ class LoginFrom extends Component {
     }
 
     const response = await fetch(url, options)
+    const data = await response.json()
 
     if (response.ok) {
       this.onSuccessLogin()
     } else {
-      this.onFailureLogin()
+      console.log(data.error_msg)
+      this.setState({errText: data.error_msg})
     }
   }
 
@@ -79,28 +79,34 @@ class LoginFrom extends Component {
     history.replace('/')
   }
 
-  onFailureLogin = () => {
-    this.setState({errText: true})
-  }
-
-  errText = () => <p className="err-text">*Username is not found</p>
-
   render() {
     const {errText} = this.state
 
     return (
       <div className="bg-container">
         <div className="responsive-container">
-          <img className="login-img-lg" src={loginImg} alt="website login" />
+          <img
+            className="login-img-lg"
+            src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-login-img.png"
+            alt="website login"
+          />
           <form className="login-form" onSubmit={this.onSubmitForm}>
-            <img className="website-logo" src={websiteLogo} alt="" />
-            <img className="login-img-sm" src={loginImg} alt="website login" />
+            <img
+              className="login-website-logo"
+              src={websiteLogo}
+              alt="website logo"
+            />
+            <img
+              className="login-img-sm"
+              src="https://assets.ccbp.in/frontend/react-js/nxt-trendz-login-img.png"
+              alt="website"
+            />
             {this.renderUsernameField()}
             {this.renderPasswordField()}
             <button className="submit-btn" type="submit">
               Login
             </button>
-            {errText ? this.errText() : null}
+            <p className="err-text">{errText}</p>
           </form>
         </div>
       </div>
