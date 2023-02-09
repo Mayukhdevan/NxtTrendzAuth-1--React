@@ -7,7 +7,7 @@ const websiteLogo =
   'https://assets.ccbp.in/frontend/react-js/nxt-trendz-logo-img.png'
 
 class LoginFrom extends Component {
-  state = {username: '', password: ''}
+  state = {username: '', password: '', errText: false}
 
   onChangeUsername = e => this.setState({username: e.target.value})
 
@@ -80,10 +80,14 @@ class LoginFrom extends Component {
   }
 
   onFailureLogin = () => {
-    console.log('Error')
+    this.setState({errText: true})
   }
 
+  errText = () => <p className="err-text">*Username is not found</p>
+
   render() {
+    const {errText} = this.state
+
     return (
       <div className="bg-container">
         <div className="responsive-container">
@@ -96,6 +100,7 @@ class LoginFrom extends Component {
             <button className="submit-btn" type="submit">
               Login
             </button>
+            {errText ? this.errText() : null}
           </form>
         </div>
       </div>
